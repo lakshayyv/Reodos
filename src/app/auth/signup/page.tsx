@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { EyeOff, Eye } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 import { GoogleButton } from "@/components/ui/google-button";
 import { signup } from "@/actions/user.actions";
 import { toast } from "sonner";
@@ -142,12 +142,7 @@ export default function Page() {
                   Signup &rarr;
                 </Button>
                 <div className="w-full text-center">
-                  <Link
-                    className="text-sm hover:text-primary"
-                    href="/auth/signin"
-                  >
-                    Already have account?
-                  </Link>
+                  <Link href="/auth/signin">Already have an account?</Link>
                 </div>
               </div>
             </form>

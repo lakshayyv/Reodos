@@ -1,21 +1,14 @@
 "use server";
 
-import jwt from "jsonwebtoken";
-
 import { client } from "@/config/db";
-import { SignupSchemaType } from "@/lib/types";
+import { FnReturnType, SignupSchemaType } from "@/lib/types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { generateOTP, getProvider, hashData, sendOTP } from "@/lib/helpers";
+import { getProvider, hashData, sendOTP } from "@/lib/helpers";
 
-export async function signup(payload: SignupSchemaType) {
+export async function signup(payload: SignupSchemaType): FnReturnType {
   try {
-    const JWT_SECRET = process.env.JWT_SECRET;
-    if (!JWT_SECRET) {
-      return { error: "Internal server error" };
-    }
-
     payload.password = await hashData(payload.password);
-    const response = await client.user.create({
+    await client.user.create({
       data: payload,
       select: { id: true, email: true },
     });
@@ -30,7 +23,6 @@ export async function signup(payload: SignupSchemaType) {
     return {
       data: {
         message: `Verification code sent to ${provider}`,
-        data: response,
       },
     };
   } catch (error) {
